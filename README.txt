@@ -1,7 +1,4 @@
-Name: Mani Shah
-G00974705
-CS455-Parth Pathak
-PA-1 DNS-Client
+Simple DNS Client that processes A type records, it handles one query at a time.
 ********************************************
 This program requires the library "bitstring"
 ********************************************
