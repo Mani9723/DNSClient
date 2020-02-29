@@ -1,15 +1,26 @@
+# MANI SHAH
+# G00974705
+# CS455 - PARTH PATHAK
+# PA1 - DNS-CLIENT
+
 import sys
 import bitstring
 from collections import OrderedDict
 from socket import AF_INET,SOCK_DGRAM,socket,timeout
 
+#Reads the command line
 url = sys.argv[1].split(".")
 
+#Header section of the response
 responseHeader = OrderedDict()
+#Question section of the response
 responseQuestion = OrderedDict()
+#List of RRs if there are multiple RRs
 responseAnswers = []
+#Single answer
 responseAnswerSingle = OrderedDict()
 
+#Header format of the DNS query
 query = {
     "id": "0xefef",
     "qr":"0b0",
@@ -25,7 +36,7 @@ query = {
     "nscount": 0,
     "arcount": 0
 }
-
+#Format of the data in the header of the DNS Query
 queryFormat = ["hex=id",
                "bin=qr",
                "bin=opcode",
@@ -122,7 +133,7 @@ def processResponse(dnsResponse):
 
     numRR = responseHeader["ANCOUNT"]
 
-    if numRR == 1:
+    if numRR == 1: #If only one RR
         responseAnswerSingle["NAME"] = responseQuestion["QNAME"]
         currIndex += 4
         currEnd = currIndex+4
@@ -143,7 +154,7 @@ def processResponse(dnsResponse):
         currIndex = currEnd
         currEnd = currIndex+2
         parseIP(responseHex,currIndex,currEnd)
-    else:
+    else: # More than one RR
         tempUrl = ""
         cname = ""
         alias = False
@@ -227,6 +238,7 @@ def processResponse(dnsResponse):
                         i += 1
             responseAnswers.append(currDict)
 
+#Parses the question section of the response
 def parseResponseQuestion(responseHex):
     queryURL = ""
     currIndex = 24
@@ -251,6 +263,7 @@ def parseResponseQuestion(responseHex):
 
     return currEnd
 
+#Parses the bits of the flag from the response
 def parseFlags(flags):
     binFlagsVersion = bin(int(flags,16)).lstrip("0b")
     responseHeader["QR"] = binFlagsVersion[0:1]
