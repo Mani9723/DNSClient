@@ -1,4 +1,4 @@
-Simple DNS Client that processes A type records, it handles one query at a time.
+DNS Client that processes A type records, it handles one query at a time.
 ********************************************
 This program requires the library "bitstring"
 ********************************************
